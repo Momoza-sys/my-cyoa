@@ -7,7 +7,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 const storyDir = path.join(process.cwd(), 'src', 'content', 'story');
 
 export default async function StoryPage({ params }: { params: { id: string } }) {
-    const filePath = path.join(storyDir, '${params.id}.mdx');
+    const filePath = path.join(storyDir, `${params.id}.mdx`);
 
     if (!fs.existsSync(filePath)){
         return <div>Story not found</div>;
