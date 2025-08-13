@@ -11,7 +11,12 @@ const components = {
   Choice: Choice
 }
 
-export default async function StoryPage({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function StoryPage({ params, searchParams }: PageProps) {
     const filePath = path.join(storyDir, `${params.id}.mdx`);
 
     if (!fs.existsSync(filePath)){
@@ -23,7 +28,7 @@ export default async function StoryPage({ params }: { params: { id: string } }) 
 
     return (
         <main className="prose max-w-2xl mx-auto p-4">
-            <MDXRemote source={content} components={components} s={undefined} />
+            <MDXRemote source={content} components={components} s="" />
         </main>
     );
 }
