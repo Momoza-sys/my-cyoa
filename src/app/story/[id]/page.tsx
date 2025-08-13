@@ -1,34 +1,20 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import Choice from '@/components/Choice';
 
-//This is where the MDX files live
-const storyDir = path.join(process.cwd(), 'src', 'content', 'story');
+const components = { Choice };
 
-const components = {
-  Choice: Choice
-}
-
-type PageProps = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export default async function StoryPage({ params, searchParams }: PageProps) {
-    const filePath = path.join(storyDir, `${params.id}.mdx`);
-
-    if (!fs.existsSync(filePath)){
-        return <div>Story not found</div>;
-    }
-
-    const source = fs.readFileSync(filePath, 'utf8');
-    const {content} = matter(source);
+export default async function StoryPage({ params }: { params: { id: string } }) {
+  try {
+    // Dynamically import the MDX file
+    const mdxModule = await import(`@/content/story/${params.id}.mdx`);
+    const MDXContent = mdxModule.default;
 
     return (
-        <main className="prose max-w-2xl mx-auto p-4">
-            <MDXRemote source={content} components={components} s="" />
-        </main>
+      <main className="prose max-w-2xl mx-auto p-4">
+        <MDXContent components={components} />
+      </main>
     );
+  } catch (err) {
+    return <div>Story not found</div>;
+  }
 }
