@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+});
 
-export default nextConfig;
+export default withMDX({
+  plugins: [require('@tailwindcss/typography')],
+  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+});
