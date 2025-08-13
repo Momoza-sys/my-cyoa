@@ -5,7 +5,9 @@ const withMDX = createMDX({
   extension: /\.mdx?$/,
 });
 
-export default withMDX({
-  plugins: [require('@tailwindcss/typography')],
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
-});
+};
+
+export default withMDX(nextConfig);
